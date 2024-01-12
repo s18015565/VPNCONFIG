@@ -1,0 +1,35 @@
+COMANDDOS PARA INSTALAR OVPN Y AUTORUN
+
+sudo dnf install openvpn
+sudo dnf install NetworkManager-openvpn
+sudo openvpn vpnconfig.ovpn
+ifconfig
+
+sudo cp vpnconfig.ovpn /etc/openvpn/
+sudo vim /etc/systemd/system/openvpn-autoconnect.service
+---------------------------------------------------------------
+[Unit]
+
+Description=OpenVPN Autoconnect
+
+After=network.target
+
+
+
+[Service]
+
+Type=simple
+
+ExecStart=/usr/sbin/openvpn --config /etc/openvpn/vpnconfig.ovpn
+
+
+
+[Install]
+
+WantedBy=multi-user.target
+-----------------------------------------------------------------
+
+sudo systemctl enable openvpn-autoconnect
+sudo systemctl start openvpn-autoconnect
+sudo systemctl status openvpn-autoconnect
+
